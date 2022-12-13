@@ -24,6 +24,7 @@ const usuariosLocal = [
 
 function App() {
   const [usuarios, setUsuarios] = useState(usuariosLocal);
+  const [atualiza, setAtualiza] = useState(false);
 
   const getAllUsers = () => {
     const url =
@@ -36,25 +37,15 @@ function App() {
       .then((response) => {
         setUsuarios(response.data);
       })
-      .catch((error) => {});
+      .catch((error) => {
+        console.log(error);
+      });
   };
+  console.log("ATA", atualiza);
   useEffect(() => {
     getAllUsers();
-  }, []);
-  const getAllUsers1 = () => {
-    axios
-      .get(
-        "https://us-central1-labenu-apis.cloudfunctions.net/labenusers/users",
-        { headers: { Authorization: "rogerio-kayronny72-barbosa-b" } }
-      )
-      .then((res) => {
-        setUsuarios(res.data);
-      })
-      .catch((err) => {});
-  };
-  useEffect(() => {
-    getAllUsers1();
-  }, []);
+  }, [atualiza]);
+
   return (
     <>
       <p>
@@ -67,9 +58,16 @@ function App() {
           API Labenusers
         </a>
       </p>
-      <AddUsuario />
+      <AddUsuario setAtualiza={setAtualiza} atualiza={atualiza} />
       {usuarios.map((usuario) => {
-        return <Usuario key={usuario.id} usuario={usuario} />;
+        return (
+          <Usuario
+            key={usuario.id}
+            usuario={usuario}
+            setAtualiza={setAtualiza}
+            atualiza={atualiza}
+          />
+        );
       })}
     </>
   );

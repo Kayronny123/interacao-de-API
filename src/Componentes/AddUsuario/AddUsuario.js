@@ -18,6 +18,7 @@ function AddUsuario(props) {
       .post(url, body, config)
       .then((res) => {
         alert("usuario criado");
+        props.setAtualiza(!props.atualiza);
       })
       .catch((err) => {
         console.log(err);
